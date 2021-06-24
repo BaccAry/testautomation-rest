@@ -45,6 +45,13 @@ public class UserEndpoint {
         //System.out.println(testUser.toString());
     }
 
+    public void getEditedTestUser() {
+        // sprawdz czy user zostało zmodyfikowane
+        User testUser = this.getUserByUsername("loko");
+        assertEquals(dummyUser, testUser);
+        //System.out.println(testUser.toString());
+    }
+
     public void addUser(User user) {
         RequestSpecification httpRequest = RestAssured.given().
                 contentType("application/json").accept("application/json").
@@ -55,11 +62,22 @@ public class UserEndpoint {
         assertEquals(response.statusCode(), 200);
     }
 
+    public void modifyTestUser() {
+        dummyUser.setUsername(("loko"));
+        RequestSpecification httpRequest = RestAssured.given().
+                contentType("application/json").accept("application/json").
+                body(dummyUser);
+
+        Response response = httpRequest.put(usersPath + "/" + dummyUser.getUsername());
+
+        assertEquals(response.statusCode(), 200);
+    }
+
     public User getUserByUsername(String username) {
         Response getResponse = RestAssured.given().get(usersPath + "/" + username);
         User returnedUser = getResponse.as(User.class);
 
-        assertEquals(getResponse.statusCode(), 200);
+        assertEquals(200, getResponse.statusCode());
         getResponse.getBody().prettyPrint();
         return returnedUser;
     }

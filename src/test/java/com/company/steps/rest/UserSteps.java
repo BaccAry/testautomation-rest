@@ -22,5 +22,14 @@ public class UserSteps {
         userEndpoint.getTestUser();
     }
 
+    @Given("Modify a user")
+    public void modify_user() {
+        userEndpoint.addTestUser();
+        userEndpoint.modifyTestUser();
+    }
 
+    @Then("Check if user was modified")
+    public void check_if_user_was_modified() {
+        userEndpoint.getEditedTestUser();
+    }
 }
